@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI皮灶輔助檢測</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body onload="init()">
+
+    <header>
+        <nav class="navbar">
+            <div class="container justify-content-center">
+                <a class="navbar-brand">AI皮灶輔助檢測</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="container col-12 border-bottom" id="section_1">
+            <div class="row justify-content-center">
+                <a href="#a1" class="col-md p-3 btn btn-primary">病灶AI判別</a>
+                <a href="#a2" class="col-md p-3 btn btn-primary">病灶介紹</a>
+                <a href="#a3" class="col-md p-3 btn btn-primary">搜尋醫療單位</a>
+            </div>
+        </section>
+
+        <section class="container col-12 border-bottom" id="section_2 ">
+            <div class="d-flex justify-content-center ">
+                <a name="a1" class="title p-3">皮膚病灶檢測</a>
+            </div>
+
+            <div class="row justify-content-center">
+                <label for="input" class="col p-3 btn btn-primary btn-sm">上傳病灶
+                    <input type="file" id="input" hidden onchange="loadImg()">
+                </label>
+                <!--上傳鈕-->
+
+                <input class="col p-3 btn btn-primary btn-sm" type="submit" value="檢測" onclick="submit()"
+                    id="submitBtn">
+                <!--提交鈕-->
+            </div>
+
+            <div class="row p-5">
+                <div class="col-md-4">
+                    <p>預覽:</p>
+                    <div id="showImage"></div>
+                </div>
+
+                <div class="col-md-8">
+                    <canvas id="Chart"></canvas>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <h4>檢測結果:<span id="resultValue"></span></h4>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <h4><span id="resultRemind"></span></h4>
+            </div>
+
+        </section>
+
+        <section class="container col-12 border-bottom" id="section_3">
+            <div class="d-flex justify-content-center">
+                <a name="a2" class="title p-3">病灶介紹</a>
+            </div>
+            <div id="section_3_content" class="container">
+                <div id="carouselForDisease" class="carousel slide" data-bs-interval="false">
+                    <div class="carousel-indicators" id="cardButton">
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1">
+                        </button>
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="1"
+                            aria-label="Slide 2">
+                        </button>
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="2"
+                            aria-label="Slide 3">
+                        </button>
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="3"
+                            aria-label="Slide 4">
+                        </button>
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="4"
+                            aria-label="Slide 5">
+                        </button>
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="5"
+                            aria-label="Slide 6">
+                        </button>
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="6"
+                            aria-label="Slide 7">
+                        </button>
+                        <button type="button" data-bs-target="#carouselForDisease" data-bs-slide-to="7"
+                            aria-label="Slide 8">
+                        </button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="cardDisease" id="cardMEL">
+                                <h1 class="disease">黑色素瘤</h1>
+                                <h5>Melanoma</h5>
+                                <p id="pBad">惡性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    有5項明顯特徵:（A）形狀是否對稱、（B）邊緣是否規則、（C）顏色是否均勻、（D）軸徑的大小是否超過 0.6 公分、（E）外觀是否持續變化
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    基因缺陷、免疫力低下、紫外線暴露(對於膚色較淺的人而言)是造成黑色素瘤的主因。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    治療方法通常是手術切除
+                                    黑色素瘤較大的病患，會檢測鄰近的淋巴結來判斷是否發生轉移。
+                                    若沒有轉移的話大部分的病患可被治癒。
+                                    對於黑色素瘤已發生轉移的病患，免疫療法、生物性治療、放射線治療或化學治療可能可以增加存活率
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="cardDisease" id="cardNV">
+                                <h1 class="disease">黑色素細胞痣</h1>
+                                <h5>Melanocytic Nevus</h5>
+                                <p id="pGood">良性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    廣泛存在於人類皮膚，是一種皮膚良性腫瘤，可能長在身體的任一部位，所謂一般的痣
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    大部份的痣是後天的，出現的高峰期在青春期，三十歲以後新長出來的痣會減少。<br>
+                                    與皮膚的新陳代謝有關，而一些不良習慣會直接導致皮膚代謝不佳，而形成色素痣。或當皮膚受到過多紫外線的照射或外傷，也會使黑色素在損傷處聚集過多而形成色素痣。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    痣一般不需要治療，若考慮到美觀問題或擔心病變時，才需要處理。
+                                    可以切除,雷射,電燒,刮除治療。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="cardDisease" id="cardBCC">
+                                <h1 class="disease">基底細胞癌</h1>
+                                <h5>Basal Cell Carcinoma</h5>
+                                <p id="pBad">惡性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    皮膚長出一塊無痛的隆起部分，，其上可能佈有具光澤的蛛網紋或是潰瘍，表面帶有油光，或像隆起的紅色硬塊，偶爾會出血
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    紫外線暴露、接受放射線療法、長期砷暴露、以及免疫缺陷。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    眾多的治療方式當中，手術切除仍然是最有機會將基底細胞癌徹底根除，而且避免腫瘤復發的最佳治療方法。<br>
+                                    其他可以用來治療基底細胞癌的方法包括有：放射線治療、光動力治療、刮除電燒、冷凍治療、局部塗抹藥物等
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="cardDisease" id="cardAK">
+                                <h1 class="disease">日光性角化症</h1>
+                                <h5>Actinic Keratosis</h5>
+                                <p id="pGood">良性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    外觀呈現紅色斑塊，病變約2-6公釐大小，但在黃種人常大於1公分，表面粗糙，摸起來有砂礫感，有時會有緊黏之異常角化性皮屑覆蓋。
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    主要發生在長期曝曬陽光的部位，導因於紫外線對皮膚細胞所 累積的傷害，在白種人或免疫功能異常的患者較容易發生。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    光動力療法。
+                                    傳統的治療方法包括冷凍療法、手術切除、二氧化碳雷射或是放射線療法等。
+                                    醫師可以針對病灶的大小、位置或是發病史，選擇適合每一位患者的治療方法，大多可以有效去除角質不正常增生的狀況。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="cardDisease" id="cardBKL">
+                                <h1 class="disease">脂漏性角化症(老人斑)</h1>
+                                <h5>Benign Keratosis</h5>
+                                <p id="pGood">良性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    直徑一至四公釐的圓形小顆斑點，多數長在眼睛下方、兩頰與顴骨一帶。 有時候除了臉部之外，也會在背部及手上冒出來。
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    長期受太陽曝曬引發的皮膚老化及年長後，皮膚功能逐漸衰退、自由基排除能力下降、內分泌失調、血液循環不良及內臟功能變差等有關。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    絕大多數情況下，老人斑不會對人體造成威脅，通常不需要治療
+                                    可以通過電外科手術、雷射治療、冷凍療法或使用去色劑，如對苯二酚、維A酸、局部半胱胺（topical cysteamine）、壬二酸或α-羥基酸來去除老年斑。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="cardDisease" id="cardDF">
+                                <h1 class="disease">皮膚纖維瘤</h1>
+                                <h5>Dermatofibroma</h5>
+                                <p id="pGood">良性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    它的發病部位在皮膚，組織來源是纖維組織，大體形狀為結節狀，大小如豆狀，質地是堅硬的，病變的性質是單純性的，是良性的。
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    多與患者的體質有關
+                                    有些學者認為皮膚纖維的可能與外傷有關，例如蚊蟲叮咬合併搔抓後，真皮層的纖維母細胞受到刺激增生，有可能導致良性纖維瘤的產生。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    用外科手術切除的方式最佳，冷凍療法通常無法完全去除，也不適合注射類固醇或雷射治療。<br>
+                                    纖維瘤多數是良性，不一定需要特別治療。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="cardDisease" id="cardVASC">
+                                <h1 class="disease">血管病變</h1>
+                                <h5>Vascular Lesion</h5>
+                                <p id="pGood">良性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    血管瘤從本質上可分為兩種<br>
+                                    1.毛細血管瘤：為表淺的毛細血管擴張、曲折、迂迴而成。血管瘤多見於嬰兒出生時（約1/3）或出生後不久（1個月內）<br>
+                                    2.海綿狀血管瘤：一般由小靜脈和脂肪組織構成。它的形態和質地均象海綿，故稱為海綿狀血管瘤。
+                                    多數生長在皮下組織內，也可在肌肉內，少數可在骨或內臟等部位。
+                                    皮下海綿狀血管瘤可使局部輕微隆起，皮膚正常，或呈青紫色，腫塊質地軟而境界清楚。
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    血管、淋巴管管壁或其周圍組織的細胞增生形成的良性腫瘤
+                                    血管瘤的發生率隨着患者年齡的增長而增加。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    化學及藥物治療、類固醇使用、冰凍治療、放射線治療、注射硬化劑、雷射治療、血管栓塞治療，或外科切除手術等。
+                                    85% 的血管瘤會自行消退，消退後的外觀不會有太大變化，而且很少會有併發症發生，因此可以等待及觀察來處理。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item">
+                            <div class="cardDisease" id="cardSCC">
+                                <h1 class="disease">鱗狀細胞癌</h1>
+                                <h5>Squamous Cell Carcinoma</h5>
+                                <p id="pBad">惡性</p>
+                                <h5>特徵：</h5>
+                                <p>
+                                    可以出現在皮膚的任何一個地方，外表看起來偏結痂狀，由於病灶容易發生潰瘍，所以經常呈現為紅色或肉色外觀，
+                                    不過若沒有出血，可能會呈咖啡色的突起結痂。 與其他皮膚癌不同的是，
+                                    鱗狀細胞癌的病灶較容易長得很大，外觀會明顯隆起如同發紅的小腫塊。
+                                </p>
+                                <h5>成因：</h5>
+                                <p>
+                                    過度曝曬於紫外線底下是導致鱗狀細胞癌的主因。
+                                </p>
+                                <h5>治療方法：</h5>
+                                <p>
+                                    絕大多數的鱗狀細胞癌患者均採取手術切除術
+                                    放射性療法，包括體外放射治療和短距離放射治療也可運用於治療鱗狀細胞癌。放射性治療通常對高危險癌症或患者類型中採取
+                                    莫氏手術也常被採用於治療中，特別是對皮膚鱗狀細胞癌患者
+                                    電乾燥法和刮除術也可以採用於治療皮膚鱗狀細胞癌。
+                                </p>
+                            </div>
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselForDisease"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselForDisease"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+        </section>
+
+        <section class="container col-12 border-bottom" id="section_4">
+            <div class="d-flex justify-content-center">
+                <a name="a3" class="title p-3">搜尋醫療單位</a>
+            </div>
+            <div class="row justify-content-center" id="section_4_content">
+                <table id="myTable" class="col ">
+                    <tfoot>
+                        <tr>
+                            <th>醫事機構名稱</th>
+                            <th>電話</th>
+                            <th>特約類別</th>
+                            <th>地址</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div>
+            <small>@此內容為課程學習專題</small>
+
+        </div>
+        <div>
+            <small>資料來源</small><br>
+            <small>
+                The images and metadata of the "ISIC 2019: Training" data are licensed under a Creative Commons
+                Attribution-NonCommercial 4.0 International License (CC-BY-NC).<br>
+                You should have received a copy of the license along with this work.
+                If not, see <a
+                    href="http://creativecommons.org/licenses/by-nc/4.0">http://creativecommons.org/licenses/by-nc/4.0</a>.<br>
+                <br>
+                Additional information and documentation for the "ISIC 2019: Training" data may be found at <a
+                    href="https://challenge2019.isic-archive.com/">https://challenge2019.isic-archive.com/</a>.<br>
+                <br>
+                The "ISIC 2019: Training" data includes content from several copyright holders.<br>
+                To comply with the attribution requirements of the CC-BY-NC license, the aggregate "ISIC 2019: Training"
+                data must be cited as:<br>
+                <br>
+                ISIC 2019 data is provided courtesy of the following sources:<br>
+                BCN_20000 Dataset: (c) Department of Dermatology, Hospital Clínic de Barcelona<br>
+                HAM10000 Dataset: (c) by ViDIR Group, Department of Dermatology, Medical University of Vienna;
+                <a href="https://doi.org/10.1038/sdata.2018.161">https://doi.org/10.1038/sdata.2018.161</a><br>
+                MSK Dataset: (c) Anonymous; <a
+                    href="https://arxiv.org/abs/1710.05006">https://arxiv.org/abs/1710.05006</a> ; <a
+                    href="https://arxiv.org/abs/1902.03368">https://arxiv.org/abs/1902.03368</a><br>
+            </small>
+        </div>
+    </footer>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>

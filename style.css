@@ -1,0 +1,116 @@
+body {
+    background-color: rgb(255, 242, 230);
+}
+
+.footer {
+    background-color: rgb(184, 110, 97);
+    color: #f7e9e2;
+}
+
+.navbar {
+    background-color: rgb(184, 110, 97);
+}
+
+.navbar-brand {
+    color: #f7e9e2;
+}
+
+.title {
+    font-size: 30px;
+    /* border-radius: 10px;*/
+    text-decoration: none;
+    color: rgb(184, 110, 97);
+}
+
+#Chart {
+    margin: auto;
+    width: 100%;
+    /* min-width: 700px; */
+}
+
+#pBad {
+    color: #cf3a23;
+    font-weight: bold;
+}
+
+#pGood {
+    color: #aec777;
+    font-weight: bold;
+}
+
+#cardMEL {
+    background: #524845;
+    color: #f7e9e2;
+}
+
+#cardNV {
+    background: #a69b8f;
+    color: #5e5c5c;
+}
+
+#cardBCC {
+    background: #694e30;
+    color: #f7e9e2;
+}
+
+#cardAK {
+    background: #8f747e;
+    color: #f7e9e2;
+}
+
+#cardBKL {
+    background: #a88f59;
+    color: #f7e9e2;
+}
+
+#cardDF {
+    background: #d1bfb6;
+    color: #5e5c5c;
+}
+
+#cardVASC {
+    background: #ad7f9d;
+    color: #f7e9e2;
+}
+
+#cardSCC {
+    background: #b8655c;
+    color: #f7e9e2;
+}
+
+.carousel-inner {
+    border-radius: 10px;
+}
+
+.cardDisease {
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+/* #copyright {
+    padding-left: 40px;
+    padding-bottom: 10px;
+} */
+
+.btn {
+    background: rgb(204, 157, 148);
+    max-width: 300px;
+    margin: 20px 50px;
+    padding: 10px 10px;
+}
+
+#showImage {
+    width: 90%;
+    aspect-ratio: 1/1;
+    background-color: rgb(184, 110, 97);
+    position: relative;
+    margin:auto;
+}
+
+#outputImage {
+    width: 100%;
+    height: 100%;
+    position:absolute;
+}
